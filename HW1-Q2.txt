@@ -1,0 +1,119 @@
+
+# June10 2024RD - ECE5831 HW1 Q2
+
+# ----- C O D E -----------------------
+
+# Matrix Assignment and Initialization
+
+X = [[2,4],
+    [1,3]]
+
+Y = [[1],[3]]
+
+Z = [[2],[3]]
+
+print('X = ')
+for row in X:
+    print('   ', row)
+
+
+print('Y = ', Y)
+print('Z = ',Z)
+
+print('')
+
+# Math Rules using Python
+
+print('Math Rules using Python')
+
+def transpose(matrix):
+    transposed = []
+    for i in range(len(matrix[0])):
+        transposed_row = []
+        for row in matrix:
+            transposed_row.append(row[i])
+        transposed.append(transposed_row)
+    return transposed
+
+# Dot product
+def dot_product(v1, v2):
+    #aggregating v1, v2 into tuples and calcualte the product of a and b
+    return sum(a * b for a, b in zip(v1, v2)) 
+
+# Multiplication
+def multiply(A, B):
+    result = [[0] * len(B[0]) for _ in range(len(A))]
+    for i in range(len(A)):
+        for j in range(len(B[0])):
+            for k in range(len(B)):
+                result[i][j] += A[i][k] * B[k][j]
+    return result
+
+# X Inverse
+def inverse(matrix):
+    a, b = matrix[0]
+    c, d = matrix[1]
+    det = a * d - b * c
+    if det == 0:
+        raise ValueError("Matrix is not invertible")
+    return [[d / det, -b / det], [-c / det, a / det]]
+
+# Calculate Y^T * Z
+Y_transposed = transpose(Y)
+Y_transpose_Z = multiply(Y_transposed, Z)
+#print("Y^T * Z =", Y_transpose_Z)
+
+# Calculate X * Y
+X_Y = multiply(X, Y)
+#print("X * Y =", X_Y)
+
+# Calculate X^(-1)
+X_inverse = inverse(X)
+#print("X^(-1) =", X_inverse)
+
+def print_matrix(matrix, name):
+    print(f"\033[1m{name} =\033[0m")
+    print('[')
+    for row in matrix:
+        formatted_row = " ".join(f"\033[1;47m{item}\033[0m" for item in row)
+        print(f"    {formatted_row}")
+
+for matrix in range(10000):
+    print_matrix(Y_transpose_Z, 'Y^T * Z')
+    print_matrix(X_Y, 'X * Y')
+    print_matrix(X_inverse, 'X^(-1)')
+
+# Math Rules using Numpy
+Numpy= "\033[1;34mnumpy\033[0m"
+print(f'Math Rules using {Numpy}')
+
+import numpy as np
+
+# Matrix Assignment and Initialization
+X = np.array([[2, 4], [1, 3]])
+Y = np.array([[1], [3]])
+Z = np.array([[2], [3]])
+
+# Calculate Y^T * Z
+Y_transpose_Z = np.dot(Y.T, Z)
+
+# Calculate X * Y
+X_Y = np.dot(X, Y)
+
+# Calculate X^(-1)
+X_inverse = np.linalg.inv(X)
+
+# Print matrices in readable format with NumPy
+def print_matrix(matrix, name):
+    print(f"\033[1m{name} =\033[0m")
+    print("  [")
+    for row in matrix:
+        formatted_row = " ".join(f"\033[1;34m{item}\033[0m" for item in row)
+        print(f"    {formatted_row}")
+    print("  ]")
+
+for matrix in range(10000):
+    print_matrix(Y_transpose_Z, "Y^T * Z")
+    print_matrix(X_Y, "X * Y")
+    print_matrix(X_inverse, "X^(-1)")
+
